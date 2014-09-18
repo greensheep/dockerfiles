@@ -11,13 +11,13 @@ ADD ./lib /home/lib
 # Install packages
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libmysqlclient-dev libxml2-dev libgd-dev libcurl4-openssl-dev
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libmysqlclient-dev libxml2-dev libgd-dev libcurl4-openssl-dev libgd3 mcrypt libmcrypt-dev
 
 # Build and install PHP
 WORKDIR /home/lib/php-5.5
 RUN tar -xvf php-5.5.16.tar.gz
 WORKDIR /home/lib/php-5.5/php-5.5.16
-RUN ./configure --enable-fpm --with-mysql --with-gd --with-curl
+RUN ./configure --enable-fpm --with-mysql --with-mysqli --with-zlib --with-jpeg-dir --with-gd --with-curl --with-openssl --with-pdo-mysql --with-mcrypt
 RUN make
 RUN make install
 RUN cp sapi/fpm/php-fpm /usr/local/bin
