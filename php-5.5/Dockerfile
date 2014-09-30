@@ -11,13 +11,39 @@ ADD ./lib /home/lib
 # Install packages
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libmysqlclient-dev libxml2-dev libgd-dev libcurl4-openssl-dev libgd3 mcrypt libmcrypt-dev
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	autoconf \
+	build-essential \
+	imagemagick \
+	libgd3 \
+	libgd-dev \
+	mcrypt \
+	libmcrypt-dev \
+	libbz2-dev \
+	libcurl4-openssl-dev \
+	libevent-dev \
+	libffi-dev \
+	libglib2.0-dev \
+	libjpeg-dev \
+	libmagickcore-dev \
+	libmagickwand-dev \
+	libmysqlclient-dev \
+	libncurses-dev \
+	libpq-dev \
+	libreadline-dev \
+	libsqlite3-dev \
+	libssl-dev \
+	libxml2-dev \
+	libxslt-dev \
+	libyaml-dev \
+	zlib1g-dev
 
 # Build and install PHP
 WORKDIR /home/lib/php-5.5
 RUN tar -xvf php-5.5.16.tar.gz
 WORKDIR /home/lib/php-5.5/php-5.5.16
-RUN ./configure --enable-fpm --with-mysql --with-mysqli --with-zlib --with-jpeg-dir --with-gd --with-curl --with-openssl --with-pdo-mysql --with-mcrypt
+RUN ./configure --enable-fpm --with-mysql --with-mysqli --with-zlib --with-jpeg-dir --with-gd --with-freetype-dir --with-curl --with-openssl --with-pdo-mysql --with-mcrypt
+RUN make clean
 RUN make
 RUN make install
 RUN cp sapi/fpm/php-fpm /usr/local/bin
