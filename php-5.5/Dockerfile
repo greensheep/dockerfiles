@@ -28,7 +28,9 @@ RUN apt-get install -y \
      libxml2-dev \
      libxslt-dev \
      libyaml-dev \
-     zlib1g-dev
+     zlib1g-dev \
+ && rm -rf /var/lib/apt/lists/*
+
 
 # Build and install PHP
 ADD ./lib /home/lib
@@ -37,18 +39,18 @@ RUN tar -xvf php-5.5.18.tar.gz
 WORKDIR /home/lib/php-5.5/php-5.5.18
 RUN ./configure \
       --enable-fpm \
-      --enable-zip \
-      --with-curl \
-      --with-freetype-dir \
-      --with-gd \
-      --with-imagick \
-      --with-jpeg-dir \
-      --with-mcrypt \
-      --with-mysqli \
       --with-mysql \
+      --with-mysqli \
+      --with-zlib \
+      --with-jpeg-dir \
+      --with-gd \
+      --with-freetype-dir \
+      --with-imagick \
+      --with-curl \
       --with-openssl \
       --with-pdo-mysql \
-      —-with-zlib
+      --with-mcrypt \
+      --enable-zip
 RUN make clean
 RUN make
 RUN make install
@@ -57,3 +59,5 @@ RUN cp sapi/fpm/php-fpm /usr/local/bin
 # PHP config files
 ADD ./conf/php/php.ini /usr/local/php/php.ini
 ADD ./conf/php/php-fpm.conf /usr/local/etc/php-fpm.conf
+
+RUN rm -rf /home/lib
