@@ -1,22 +1,14 @@
 FROM debian:wheezy
 MAINTAINER Tom Hill <tom@greensheep.io>
 
-# Add libraries directory
-ADD ./lib /home/lib
-
-##########################
-## INSTALL DEPENDENCIES ##
-##########################
-
 # Install packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y \
+RUN apt-get update \
+ && apt-get upgrade -y
+RUN apt-get install -y \
      autoconf \
      build-essential \
      imagemagick \
-     libgd3 \
-     libgd-dev \
+     libgd2-xpm-dev \
      mcrypt \
      libmcrypt-dev \
      libbz2-dev \
@@ -39,18 +31,28 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
      zlib1g-dev
 
 # Build and install PHP
+ADD ./lib /home/lib
 WORKDIR /home/lib/php-5.5
 RUN tar -xvf php-5.5.18.tar.gz
 WORKDIR /home/lib/php-5.5/php-5.5.18
-RUN ./configure --enable-fpm --with-mysql --with-mysqli --with-zlib --with-jpeg-dir --with-gd --with-freetype-dir --with-curl --with-openssl --with-pdo-mysql --with-mcrypt --enable-zip
+RUN ./configure \
+      --enable-fpm \
+      --enable-zip \
+      --with-curl \
+      --with-freetype-dir \
+      --with-gd \
+      --with-imagick \
+      --with-jpeg-dir \
+      --with-mcrypt \
+      --with-mysqli \
+      --with-mysql \
+      --with-openssl \
+      --with-pdo-mysql \
+      —-with-zlib
 RUN make clean
 RUN make
 RUN make install
 RUN cp sapi/fpm/php-fpm /usr/local/bin
-
-###############
-## CONFIGURE ##
-###############
 
 # PHP config files
 ADD ./conf/php/php.ini /usr/local/php/php.ini
