@@ -30,6 +30,7 @@ RUN apt-get install -y \
      libreadline-dev \
      libsqlite3-dev \
      libssl-dev \
+     libwebp-dev \
      libxml2-dev \
      libxslt-dev \
      libyaml-dev \
