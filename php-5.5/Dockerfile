@@ -51,9 +51,6 @@ RUN tar xvzf libwebp-0.4.2.tar.gz \
 
 # ImageMagick
 WORKDIR /home/lib/ImageMagick-6.9.0-0
-#RUN echo "deb-src http://http.debian.net/debian wheezy main" >> /etc/apt/sources.list
-#RUN echo "deb-src http://http.debian.net/debian wheezy-updates main" >> /etc/apt/sources.list
-#RUN echo "deb-src http://security.debian.org wheezy/updates main" >> /etc/apt/sources.list
 RUN tar xvzf ImageMagick-6.9.0-0.tar.gz \
  && cd ImageMagick-6.9.0-0 \
  && ./configure \
