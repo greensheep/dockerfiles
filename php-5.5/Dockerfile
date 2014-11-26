@@ -36,19 +36,30 @@ RUN apt-get install -y \
      libxml2-dev \
      libxslt-dev \
      libyaml-dev \
-     zlib1g-dev \
- && rm -rf /var/lib/apt/lists/*
+     zlib1g-dev
 
 # Add libraries
 ADD ./lib /home/lib
 
-# WebP
-WORKDIR /home/lib/webp-0.4.2
+# WebP (newer than provided by apt-get)
+WORKDIR /home/lib/libwebp-0.4.2
 RUN tar xvzf libwebp-0.4.2.tar.gz \
  && cd libwebp-0.4.2 \
  && ./configure \
  && make \
  && make install
+
+# ImageMagick
+WORKDIR /home/lib/ImageMagick-6.9.0-0
+RUN apt-get build-dep imagemagick \
+ && tar xvzf ImageMagick-6.9.0-0.tar.gz \
+ && cd ImageMagick-6.9.0-0 \
+ && ./configure \
+ && make \
+ && make install \
+ && ldconfig /usr/local/lib
+
+RUN rm -rf /var/lib/apt/lists/*
 
 # Build and install PHP / PHP-FPM
 WORKDIR /home/lib/php-5.5
@@ -84,10 +95,17 @@ RUN cp sapi/fpm/init.d.php-fpm.in /etc/init.d/php-fpm \
  && sed -i "s/php_fpm_CONF=@sysconfdir@/php_fpm_CONF=\/usr\/local\/etc/g" /etc/init.d/php-fpm \
  && sed -i "s/php_fpm_PID=@localstatedir@/php_fpm_PID=\/var/g" /etc/init.d/php-fpm
 
-# ImageMagick
+# ImageMagick pecl extension
 RUN pear config-set php_ini /etc/php5/php.ini \
  && pecl config-set php_ini /etc/php5/php.ini
-RUN printf "\n" | pecl install -f imagick
+
+WORKDIR /home/lib/pecl-extensions
+RUN tar xvzf imagick-3.1.2.tgz \
+ && cd imagick-3.1.2 \
+ && phpize \
+ && ./configure --with-imagick=/usr/bin/convert \
+ && make \
+ && make install
 
 # Clean up
 WORKDIR /home
