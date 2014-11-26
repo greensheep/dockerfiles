@@ -97,7 +97,6 @@ RUN cp sapi/fpm/init.d.php-fpm.in /etc/init.d/php-fpm \
 # ImageMagick pecl extension
 RUN pear config-set php_ini /etc/php5/php.ini \
  && pecl config-set php_ini /etc/php5/php.ini
-
 WORKDIR /home/lib/pecl-extensions
 RUN tar xvzf imagick-3.1.2.tgz \
  && cd imagick-3.1.2 \
