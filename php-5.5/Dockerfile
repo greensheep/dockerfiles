@@ -22,6 +22,9 @@ RUN apt-get install -y \
      libffi-dev \
      libglib2.0-dev \
      libjpeg-dev \
+     libpng-dev \
+     libtiff-dev \
+     libgif-dev \
      libmagickcore-dev \
      libmagickwand-dev \
      libmysqlclient-dev \
@@ -30,15 +33,24 @@ RUN apt-get install -y \
      libreadline-dev \
      libsqlite3-dev \
      libssl-dev \
-     libwebp-dev \
      libxml2-dev \
      libxslt-dev \
      libyaml-dev \
      zlib1g-dev \
  && rm -rf /var/lib/apt/lists/*
 
-# Build and install PHP / PHP-FPM
+# Add libraries
 ADD ./lib /home/lib
+
+# WebP
+WORKDIR /home/lib/webp-0.4.2
+RUN tar xvzf libwebp-0.4.2.tar.gz \
+ && cd libwebp-0.4.2 \
+ && ./configure \
+ && make \
+ && make install
+
+# Build and install PHP / PHP-FPM
 WORKDIR /home/lib/php-5.5
 RUN tar -xvf php-5.5.18.tar.gz
 WORKDIR /home/lib/php-5.5/php-5.5.18
