@@ -1,8 +1,8 @@
-FROM node:0.10.32
+FROM node:0.10.33
 MAINTAINER Tom Hill <tom@greensheep.io>
 
-# Install grunt / bower
-RUN npm install -g grunt-cli bower
+# Install NPM packages
+RUN npm install -g grunt-cli bower mocha
 
 # Install ruby / sass
 RUN DEBIAN_FRONTEND=noninteractive \
