@@ -3,8 +3,8 @@ MAINTAINER Tom Hill <tom@greensheep.io>
 
 # Install packages
 RUN apt-get update \
- && apt-get upgrade -y
-RUN apt-get install -y \
+ && apt-get upgrade -y \
+ && apt-get install -y \
      autoconf \
      automake \
      libtool \

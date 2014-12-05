@@ -6,6 +6,7 @@ RUN npm install -g grunt-cli bower
 
 # Install ruby / sass
 RUN DEBIAN_FRONTEND=noninteractive \
+ && apt-get update \
  && apt-get -y install ruby \
  && gem install sass
 

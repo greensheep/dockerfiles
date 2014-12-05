@@ -9,9 +9,10 @@ ADD ./lib /home/lib
 ##########################
 
 # Install packages
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN DEBIAN_FRONTEND=noninteractive \
+ && apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y \
 	autoconf \
 	build-essential \
 	imagemagick \
